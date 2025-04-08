@@ -175,6 +175,21 @@ const translation = {
   },
   openInExplore: '在“探索”中打开',
   showMyCreatedAppsOnly: '我创建的',
+  accessControl: 'WebApp 访问控制',
+  accessControlDialog: {
+    title: 'WebApp 访问权限',
+    description: '设置 WebApp 的访问权限',
+    accessLabel: '配置谁有访问权限',
+    accessItems: {
+      anyone: '任何人',
+      specific: '特定组或用户',
+      organization: '组织内的任何人',
+    },
+    groups_one: '{{count}} 个组',
+    groups_other: '{{count}} 个组',
+    members_one: '{{count}} 个人',
+    members_other: '{{count}} 个人',
+  },
 }
 
 export default translation

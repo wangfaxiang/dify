@@ -174,6 +174,21 @@ const translation = {
     },
   },
   showMyCreatedAppsOnly: 'Created by me',
+  accessControl: 'Webapp Access Control',
+  accessControlDialog: {
+    title: 'Access Control',
+    description: 'Set webapp access permissions',
+    accessLabel: 'Who has access',
+    accessItems: {
+      anyone: 'Anyone with the link',
+      specific: 'Specific groups or members',
+      organization: 'Only members within the organization',
+    },
+    groups_one: '{{count}} GROUP',
+    groups_other: '{{count}} GROUPS',
+    members_one: '{{count}} MEMBER',
+    members_other: '{{count}} MEMBERS',
+  },
 }
 
 export default translation
