@@ -46,13 +46,6 @@ class BrandingModel(BaseModel):
     favicon: str = ""
 
 
-class WebAppAuthModel(BaseModel):
-    enabled: bool = False
-    allow_sso: bool = False
-    allow_email_code_login: bool = False
-    allow_email_password_login: bool = False
-
-
 class FeatureModel(BaseModel):
     billing: BillingModel = BillingModel()
     members: LimitationModel = LimitationModel(size=0, limit=1)
@@ -85,7 +78,6 @@ class SystemFeatureModel(BaseModel):
     is_email_setup: bool = False
     license: LicenseModel = LicenseModel()
     branding: BrandingModel = BrandingModel()
-    webapp_auth: WebAppAuthModel = WebAppAuthModel()
 
 
 class FeatureService:
@@ -113,7 +105,6 @@ class FeatureService:
         if dify_config.ENTERPRISE_ENABLED:
             system_features.enable_web_sso_switch_component = True
             system_features.branding.enabled = True
-            system_features.webapp_auth.enabled = True
             cls._fulfill_params_from_enterprise(system_features)
 
         return system_features
@@ -212,15 +203,6 @@ class FeatureService:
             features.branding.login_page_logo = enterprise_info["Branding"].get("loginPageLogo", "")
             features.branding.workspace_logo = enterprise_info["Branding"].get("workspaceLogo", "")
             features.branding.favicon = enterprise_info["Branding"].get("favicon", "")
-
-        if "WebAppAuth" in enterprise_info:
-            features.webapp_auth.allow_sso = enterprise_info["WebAppAuth"].get("allowSso", False)
-            features.webapp_auth.allow_email_code_login = enterprise_info["WebAppAuth"].get(
-                "allowEmailCodeLogin", False
-            )
-            features.webapp_auth.allow_email_password_login = enterprise_info["WebAppAuth"].get(
-                "allowEmailPasswordLogin", False
-            )
 
         if "License" in enterprise_info:
             license_info = enterprise_info["License"]

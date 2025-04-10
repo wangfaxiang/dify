@@ -121,15 +121,9 @@ class UnsupportedFileTypeError(BaseHTTPException):
     code = 415
 
 
-class WebAppAuthRequiredError(BaseHTTPException):
-    error_code = "web_auth_required"
-    description = "Web app authentication required."
-    code = 401
-
-
-class WebAppAuthFailedError(BaseHTTPException):
-    error_code = "web_app_auth_failed"
-    description = "You do not have permission to access this web app."
+class WebSSOAuthRequiredError(BaseHTTPException):
+    error_code = "web_sso_auth_required"
+    description = "Web SSO authentication required."
     code = 401
 
 
