@@ -169,7 +169,7 @@ async function base<T>(url: string, options: FetchOptionType = {}, otherOptions:
         ...baseHooks.beforeRequest || [],
         isPublicAPI && beforeRequestPublicAuthorization,
         !isPublicAPI && !isMarketplaceAPI && beforeRequestAuthorization,
-      ].filter(Boolean),
+      ].filter((hook): hook is BeforeRequestHook => Boolean(hook)),
       afterResponse: [
         ...baseHooks.afterResponse || [],
         afterResponseErrorCode(otherOptions),

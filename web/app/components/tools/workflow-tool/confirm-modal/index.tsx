@@ -22,6 +22,7 @@ const ConfirmModal = ({ show, onConfirm, onClose }: ConfirmModalProps) => {
       className={cn('w-[600px] max-w-[600px] p-8')}
       isShow={show}
       onClose={noop}
+      wrapperClassName='z-[100]'
     >
       <div className='absolute right-4 top-4 cursor-pointer p-2' onClick={onClose}>
         <RiCloseLine className='h-4 w-4 text-text-tertiary' />

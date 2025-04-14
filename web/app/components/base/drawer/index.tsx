@@ -49,7 +49,7 @@ export default function Drawer({
       <div className={cn('flex h-screen w-screen justify-end', positionCenter && '!justify-center')}>
         {/* mask */}
         <DialogBackdrop
-          className={cn('fixed inset-0 z-[90]', mask && 'bg-black bg-opacity-30')}
+          className={cn('fixed inset-0 z-[90]', mask && 'bg-black/30')}
           onClick={() => {
             !clickOutsideNotOpen && onClose()
           }}
