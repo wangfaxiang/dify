@@ -22,11 +22,13 @@ import cn from '@/utils/classnames'
 type Props = {
   data?: SiteInfo
   placement?: Placement
+  hideLogout?: boolean
 }
 
 const MenuDropdown: FC<Props> = ({
   data,
   placement,
+  hideLogout,
 }) => {
   const router = useRouter()
   const pathname = usePathname()
@@ -47,7 +49,7 @@ const MenuDropdown: FC<Props> = ({
     removeAccessToken()
     const redirectUrl = pathname + (query.toString() ? `?${query.toString()}` : '')
     router.replace(`/webapp-signin?redirect_url=${redirectUrl}`)
-  }, [])
+  }, [pathname, query, router])
 
   const [show, setShow] = useState(false)
 
@@ -84,13 +86,17 @@ const MenuDropdown: FC<Props> = ({
                 }}
                 className='system-md-regular cursor-pointer rounded-lg px-3 py-1.5 text-text-secondary hover:bg-state-base-hover'
               >{t('common.userProfile.about')}</div>
-              <Divider />
-              <div
-                onClick={() => {
-                  handleLogout()
-                }}
-                className='system-md-regular cursor-pointer rounded-lg px-3 py-1.5 text-text-destructive hover:bg-state-base-hover'
-              >{t('common.userProfile.logout')}</div>
+              {!hideLogout && (
+                <>
+                  <Divider />
+                  <div
+                    onClick={() => {
+                      handleLogout()
+                    }}
+                    className='system-md-regular cursor-pointer rounded-lg px-3 py-1.5 text-text-destructive hover:bg-state-base-hover'
+                  >{t('common.userProfile.logout')}</div>
+                </>
+              )}
             </div>
           </div>
         </PortalToFollowElemContent>
