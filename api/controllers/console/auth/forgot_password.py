@@ -6,13 +6,13 @@ from flask_restful import Resource, reqparse  # type: ignore
 
 from constants.languages import languages
 from controllers.console import api
-from controllers.console.auth.error import EmailCodeError, InvalidEmailError, InvalidTokenError, PasswordMismatchError
-from controllers.console.error import (
-    AccountInFreezeError,
-    AccountNotFound,
-    EmailSendIpLimitError,
-)
-from controllers.console.wraps import setup_required
+from controllers.console.auth.error import (EmailCodeError, InvalidEmailError,
+                                            InvalidTokenError,
+                                            PasswordMismatchError)
+from controllers.console.error import (AccountInFreezeError, AccountNotFound,
+                                       EmailSendIpLimitError)
+from controllers.console.wraps import (email_password_login_enabled,
+                                       setup_required)
 from events.tenant_event import tenant_was_created
 from extensions.ext_database import db
 from libs.helper import email, extract_remote_ip
@@ -20,12 +20,14 @@ from libs.password import hash_password, valid_password
 from models.account import Account
 from services.account_service import AccountService, TenantService
 from services.errors.account import AccountRegisterError
-from services.errors.workspace import WorkSpaceNotAllowedCreateError, WorkspacesLimitExceededError
+from services.errors.workspace import (WorkSpaceNotAllowedCreateError,
+                                       WorkspacesLimitExceededError)
 from services.feature_service import FeatureService
 
 
 class ForgotPasswordSendEmailApi(Resource):
     @setup_required
+    @email_password_login_enabled
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument("email", type=email, required=True, location="json")
@@ -57,6 +59,7 @@ class ForgotPasswordSendEmailApi(Resource):
 
 class ForgotPasswordCheckApi(Resource):
     @setup_required
+    @email_password_login_enabled
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument("email", type=str, required=True, location="json")
@@ -76,11 +79,21 @@ class ForgotPasswordCheckApi(Resource):
         if args["code"] != token_data.get("code"):
             raise EmailCodeError()
 
-        return {"is_valid": True, "email": token_data.get("email")}
+        # Verified, revoke the first token
+        AccountService.revoke_reset_password_token(args["token"])
+
+        # Refresh token data by generating a new token
+        _, new_token = AccountService.generate_reset_password_token(
+            user_email, code=args["code"], additional_data={"phase": "reset"}
+        )
+
+        AccountService.reset_forgot_password_error_rate_limit(args["email"])
+        return {"is_valid": True, "email": token_data.get("email"), "token": new_token}
 
 
 class ForgotPasswordResetApi(Resource):
     @setup_required
+    @email_password_login_enabled
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument("token", type=str, required=True, nullable=False, location="json")
@@ -98,6 +111,9 @@ class ForgotPasswordResetApi(Resource):
         reset_data = AccountService.get_reset_password_data(token)
 
         if reset_data is None:
+            raise InvalidTokenError()
+        # Must use token in reset phase
+        if reset_data.get("phase", "") != "reset":
             raise InvalidTokenError()
 
         AccountService.revoke_reset_password_token(token)
