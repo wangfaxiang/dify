@@ -112,9 +112,9 @@ const translation = {
     image: 'Image',
   },
   answerIcon: {
-    title: 'Use WebApp icon to replace 🤖',
-    description: 'Whether to use the WebApp icon to replace 🤖 in the shared application',
-    descriptionInExplore: 'Whether to use the WebApp icon to replace 🤖 in Explore',
+    title: 'Use web app icon to replace 🤖',
+    description: 'Whether to use the web app icon to replace 🤖 in the shared application',
+    descriptionInExplore: 'Whether to use the web app icon to replace 🤖 in Explore',
   },
   switch: 'Switch to Workflow Orchestrate',
   switchTipStart: 'A new app copy will be created for you, and the new copy will switch to Workflow Orchestrate. The new copy will ',
@@ -174,10 +174,10 @@ const translation = {
     },
   },
   showMyCreatedAppsOnly: 'Created by me',
-  accessControl: 'Webapp Access Control',
+  accessControl: 'web app Access Control',
   accessControlDialog: {
     title: 'Access Control',
-    description: 'Set webapp access permissions',
+    description: 'Set web app access permissions',
     accessLabel: 'Who has access',
     accessItems: {
       anyone: 'Anyone with the link',
@@ -189,7 +189,7 @@ const translation = {
     members_one: '{{count}} MEMBER',
     members_other: '{{count}} MEMBERS',
     noGroupsOrMembers: 'No access members have been added yet',
-    webAppSSONotEnabledTip: 'Please contact the administrator to enable the WebApp identity authentication method.',
+    webAppSSONotEnabledTip: 'Please contact the administrator to enable the web app identity authentication method.',
     operateGroupAndMember: {
       searchPlaceholder: 'Search groups and members',
       allMembers: 'All members',
@@ -198,6 +198,12 @@ const translation = {
     },
     updateSuccess: 'Update successfully',
   },
+  publishApp: {
+    title: 'Who can access web app',
+    notSet: 'Not set',
+    notSetDesc: 'Currently nobody can access the web app. Please set permissions.',
+  },
+  noAccessPermission: 'No permission to access web app',
 }
 
 export default translation
