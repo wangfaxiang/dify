@@ -6,7 +6,7 @@ def is_db_command():
     if len(sys.argv) > 1 and sys.argv[0].endswith("flask") and sys.argv[1] == "db":
         return True
     return False
-# 王法翔修改测试
+# 王法翔修改测试 
 
 # create app
 if is_db_command():
